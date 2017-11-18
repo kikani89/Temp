@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ class Node {
 	}
 }
 
-public class BT_NoParentPtr_Solution1
+public class BT_NoParentPtr_Solution1 
 {
 
 	Node root;
@@ -70,30 +69,52 @@ public class BT_NoParentPtr_Solution1
 
 		return false;
 	}
+	
+	int getLevelUtil(Node node, int data, int level) 
+    {
+        if (node == null)
+            return 0;
+  
+        if (node.data == data)
+            return level;
+  
+        int downlevel = getLevelUtil(node.left, data, level + 1);
+        if (downlevel != 0)
+            return downlevel;
+  
+        downlevel = getLevelUtil(node.right, data, level + 1);
+        return downlevel;
+    }
+  
+    /* Returns level of given data value */
+    int getLevel(Node node, int data) 
+    {
+        return getLevelUtil(node, data, 1);
+    }
 
 	public static void main(String[] args)
 	{
 		BT_NoParentPtr_Solution1 tree = new BT_NoParentPtr_Solution1();
 		Queue<Node> q = new LinkedList<>();
-
+		
 		 Scanner scanner = new Scanner(System.in);
-
+	
         int height = Integer.parseInt(scanner.next());
         int a1 = Integer.parseInt(scanner.next());
         int a2 = Integer.parseInt(scanner.next());
-
+        
 
 		/*create root*/
 		tree.root = new Node(0);
 		q.add(tree.root);
-
+		
 		int cnt = 1;
 		for (int i = 0; i <= height; i++) {
 		    int nodeCount = q.size();
 		    if (nodeCount == 0){
 		        break;
 		    }
-		    while (nodeCount > 0)
+		    while (nodeCount > 0) 
 		    {
 				Node newnode = q.peek();
 				q.remove();
@@ -106,7 +127,8 @@ public class BT_NoParentPtr_Solution1
 				nodeCount--;
 			}
 		}
-
-		System.out.println(tree.findLCA(a1,a2));
+        int lca = tree.findLCA(a1,a2);
+        int level = tree.getLevel( tree.root, lca );
+		System.out.println( lca + " " + ( --level ) );
 	}
 }
